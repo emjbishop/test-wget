@@ -1,7 +1,14 @@
 {
   "form": {
     "type": "object",
-    "properties": {},
+    "properties": {
+      "url": {
+        "type": "string",
+        "title": "URL",
+        "description": "URL to download with wget",
+        "default": "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md"
+      }
+    },
     "required": []
   },
   "ui": {}

@@ -15,9 +15,10 @@ def write_json(fp, obj, indent=4) -> None:
 
 
 def setup_inputs(ds: PreprocessDataset):
-    """No user inputs required — the workflow downloads a hardcoded URL."""
     ds.logger.info("Formatting inputs")
-    write_json("inputs.0.json", {})
+    write_json("inputs.0.json", {
+        "test_wget.url": ds.params.get("url", "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md")
+    })
 
 
 def setup_options(ds: PreprocessDataset):

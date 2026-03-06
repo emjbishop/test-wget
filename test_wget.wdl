@@ -1,7 +1,11 @@
 version 1.0
 
 workflow test_wget {
-    call download_file
+    input {
+        String url = "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md"
+    }
+
+    call download_file { input: url = url }
 
     output {
         File downloaded = download_file.outfile
@@ -9,9 +13,13 @@ workflow test_wget {
 }
 
 task download_file {
+    input {
+        String url = "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md"
+    }
+
     command <<<
         set -euo pipefail
-        wget -O README.md "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md"
+        wget -O outfile "~{url}"
     >>>
 
     runtime {
@@ -21,6 +29,6 @@ task download_file {
     }
 
     output {
-        File outfile = "README.md"
+        File outfile = "outfile"
     }
 }
