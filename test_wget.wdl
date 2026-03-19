@@ -2,7 +2,7 @@ version 1.0
 
 workflow test_wget {
     input {
-        String url = "https://github.com/getwilds/wilds-wdl-library/blob/main/README.md"
+        String url = "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR609/001/ERR6090701/ERR6090701_1.fastq.gz"
     }
 
     call download_file { input: url = url }
