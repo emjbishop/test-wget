@@ -1,10 +1,37 @@
 #!/usr/bin/env python3
 import json
-from cirro.helpers.preprocess_dataset import PreprocessDataset
+import logging
+import os
+import pandas as pd
+from cirro.helpers.preprocess_dataset import PreprocessDataset, read_json
 
 
 def main():
-    ds = PreprocessDataset.from_running()
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)-8s [PreprocessDataset] %(message)s'
+    )
+    logger = logging.getLogger(__name__)
+
+    dataset_root = os.getenv("PW_S3_DATASET")
+    config_dir = f"{dataset_root}/config"
+    logger.info(f"Reading params from {config_dir}")
+
+    params = read_json(f"{config_dir}/params.json")
+
+    try:
+        metadata = read_json(f"{config_dir}/metadata.json")
+    except Exception:
+        metadata = {}
+
+    ds = PreprocessDataset(
+        samplesheet=pd.DataFrame(columns=["sample"]),
+        files=pd.DataFrame(columns=["sample", "file"]),
+        params=params,
+        metadata=metadata,
+        dataset_root=dataset_root
+    )
+
     setup_inputs(ds)
     setup_options(ds)
 
@@ -17,7 +44,7 @@ def write_json(fp, obj, indent=4) -> None:
 def setup_inputs(ds: PreprocessDataset):
     ds.logger.info("Formatting inputs")
     write_json("inputs.0.json", {
-        "test_wget.url": ds.params.get("url", "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md")
+        "test_wget.url": ds.params.get("url")
     })
 
 
