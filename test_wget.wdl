@@ -23,7 +23,7 @@ task download_file {
     >>>
 
     runtime {
-        docker: "getwilds/ena-tools:2.1.1"
+        docker: "getwilds/gtf-smash:v8"
         cpu: 1
         memory: "2 GB"
     }
