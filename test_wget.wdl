@@ -2,7 +2,7 @@ version 1.0
 
 workflow test_wget {
     input {
-        String url = "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md"
+        String url = "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR609/001/ERR6090701/ERR6090701_1.fastq.gz"
     }
 
     call download_file { input: url = url }
@@ -14,16 +14,16 @@ workflow test_wget {
 
 task download_file {
     input {
-        String url = "https://raw.githubusercontent.com/getwilds/wilds-wdl-library/main/README.md"
+        String url
     }
 
     command <<<
         set -euo pipefail
-        wget -O outfile "~{url}"
+        wget -O outfile --no-check-certificate ~{url}
     >>>
 
     runtime {
-        docker: "ubuntu:22.04"
+        docker: "getwilds/ena-tools:2.1.1"
         cpu: 1
         memory: "2 GB"
     }
