@@ -43,9 +43,10 @@ def write_json(fp, obj, indent=4) -> None:
 
 def setup_inputs(ds: PreprocessDataset):
     ds.logger.info("Formatting inputs")
-    write_json("inputs.0.json", {
-        "test_wget.url": ds.params.get("url")
-    })
+    inputs = {}
+    if ds.params.get("url"):
+        inputs["test_wget.url"] = ds.params["url"]
+    write_json("inputs.0.json", inputs)
 
 
 def setup_options(ds: PreprocessDataset):
